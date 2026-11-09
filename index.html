@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Editorial to Ad Transition: Prototype A</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="stage">
+
+    <section class="phone" aria-label="Article with autoplay video">
+      <div class="topbar">The New York Times</div>
+
+      <div class="article">
+        <p class="kicker">Fashion Week</p>
+        <h1 class="headline">Fashion week looks that made it into our Spotlight for 2026</h1>
+        <p class="dek">The story video plays full frame. The ad is a separate film, with its own labels, timer, and skip.</p>
+
+        <div class="player" id="player" data-state="editorial" data-segment="editorial">
+          <video
+            id="editorial"
+            class="media editorial"
+            src="media/editorial.mp4"
+            playsinline
+            muted
+            preload="auto"
+          ></video>
+
+          <div class="ad-backdrop" id="adBackdrop"></div>
+          <div class="ad-stage" id="adStage">
+            <video
+              id="ad"
+              class="media"
+              src="media/ad.mp4"
+              playsinline
+              muted
+              preload="auto"
+            ></video>
+            <div class="on-video">
+              <div class="ad-meta">
+                <span class="slug">AD</span>
+                <span class="timer" id="adTimer">0:15</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="chrome" id="chrome">
+            <img class="mark" src="media/super-t.svg" alt="The New York Times">
+            <div class="controls">
+              <button class="icon-btn" id="expandBtn" type="button" aria-label="Expand">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M14 5h5v5M19 5l-6 6M10 19H5v-5M5 19l6-6"/>
+                </svg>
+              </button>
+              <button class="icon-btn is-muted" id="muteBtn" type="button" aria-label="Unmute" aria-pressed="true">
+                <svg class="icon-sound" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M4.5 10h2.8L12 6.2v11.6L7.3 14H4.5v-4z"/>
+                </svg>
+                <svg class="icon-muted" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M4.5 10h2.8L12 6.2v11.6L7.3 14H4.5v-4zM16 9.5l4.5 5M20.5 9.5l-4.5 5"/>
+                </svg>
+              </button>
+              <button class="icon-btn" id="shareBtn" type="button" aria-label="Copy link">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M10 13.2a3.6 3.6 0 0 0 5.1.4l1.8-1.8a3.6 3.6 0 0 0-5.1-5.1l-1 1"/>
+                  <path d="M14 10.8a3.6 3.6 0 0 0-5.1-.4l-1.8 1.8a3.6 3.6 0 0 0 5.1 5.1l1-1"/>
+                </svg>
+              </button>
+            </div>
+            <p class="credit">The New York Times</p>
+          </div>
+
+          <div class="brand-card" id="brandCard">
+            <img class="brand-logo" src="media/louis-vuitton.svg" alt="Louis Vuitton">
+            <p>Fall Collection 2026.</p>
+            <span class="cta">Explore</span>
+          </div>
+
+          <p class="continues" id="continues">Video continues after advertisement</p>
+          <div class="cue-pill" id="cuePill">Ad starts in <span id="cueCount">5</span></div>
+          <button class="skip" id="skipBtn" type="button">Skip ad in 5</button>
+
+          <div class="blackout" id="blackout"></div>
+
+          <button class="play-toggle" id="playToggle" type="button" aria-label="Play">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M9 7.2v9.6l8-4.8-8-4.8z" fill="currentColor"/>
+            </svg>
+          </button>
+
+          <div class="progress">
+            <div class="progress-fill" id="progressFill"></div>
+            <div class="progress-knob" id="progressKnob"></div>
+          </div>
+        </div>
+
+        <p class="caption">Alex Pena, Stephanie Figgins, Axel Boada and Caroline Kim</p>
+        <p class="body">The countdown, the AD slug, the timer, the skip control, and the brand line are all part of this page, so they can move without sitting on top of type that was already in the picture.</p>
+      </div>
+    </section>
+
+    <aside class="panel">
+      <h2>Transition prototype</h2>
+
+      <div class="buttons">
+        <button class="btn" id="playBtn" type="button">Pause</button>
+        <button class="btn" id="replayBtn" type="button">Replay</button>
+        <button class="btn" id="jumpBtn" type="button">Jump to cue</button>
+        <button class="btn" id="triggerBtn" type="button">Play ad now</button>
+      </div>
+
+      <h3>Tuning</h3>
+
+      <label class="field">
+        <span>Lights out <output id="o-lightsOut"></output></span>
+        <input type="range" id="s-lightsOut" min="200" max="1600" step="20" value="700" />
+      </label>
+      <label class="field">
+        <span>Hold in black <output id="o-holdBlack"></output></span>
+        <input type="range" id="s-holdBlack" min="0" max="600" step="20" value="80" />
+      </label>
+      <label class="field">
+        <span>Lights in <output id="o-lightsIn"></output></span>
+        <input type="range" id="s-lightsIn" min="200" max="1600" step="20" value="650" />
+      </label>
+      <label class="field">
+        <span>Ad break at <output id="o-breakAt"></output></span>
+        <input type="range" id="s-breakAt" min="6" max="20" step="1" value="8" />
+      </label>
+      <label class="field">
+        <span>Cue lead time <output id="o-cueLead"></output></span>
+        <input type="range" id="s-cueLead" min="3" max="8" step="1" value="5" />
+      </label>
+      <label class="field">
+        <span>Ad length <output id="o-adDuration"></output></span>
+        <input type="range" id="s-adDuration" min="5" max="20" step="1" value="15" />
+      </label>
+      <label class="field">
+        <span>Skip available after <output id="o-skipAfter"></output></span>
+        <input type="range" id="s-skipAfter" min="0" max="8" step="1" value="5" />
+      </label>
+
+      <h3>State</h3>
+      <pre class="readout" id="readout"></pre>
+
+      <h3>What you can move</h3>
+      <ul class="notes">
+        <li><b>Before the break:</b> “Ad starts in” sits on the editorial picture.</li>
+        <li><b>On the ad:</b> “Video continues after advertisement,” AD slug, remaining time, skip, and the Louis Vuitton line.</li>
+        <li>None of that type is burned into either clip.</li>
+      </ul>
+    </aside>
+
+  </main>
+
+  <script src="main.js"></script>
+</body>
+</html>
